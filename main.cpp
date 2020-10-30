@@ -12,12 +12,14 @@ int main()
                {0,  1,    1,  0, 0},
                {0,  1,    84, 0, 0},
                {84, 6587, 0,  0, 0}};
-        pos start = {0, 2};
+        pos start = { x:0, y:2};
         std::cout << map[0][2] << "\n";
         Enemy en(start_time, map, start);
         //CLEAR;
         tower t1(start_time, start), t2(11 , start);
         t2 = t1;
-        std::cout << t2.getstime() << "\n";
+        std::cout << t2.getstime() << "\n" << t1;
+
+
     return 0;
 }

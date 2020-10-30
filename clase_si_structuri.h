@@ -56,6 +56,7 @@ class tower{
     int aspeed = 20;
     pos loc;
     int stime;
+    friend std::ostream& operator<<(std::ostream& out, const tower &t);
 public:
     pos const getpos(){
         return loc;
@@ -66,14 +67,14 @@ public:
 
     tower(int time, pos loc){
         this->stime = time;
-        loc = loc;
+        this->loc = loc;
     }
 
     ~tower(){
         std::cout << "Turnul s-a distrus \n";
     }
 
-    tower operator=(const tower &t){
+    tower& operator=(const tower &t){
         std::cout << "= \n";
         this->stime = t.stime;
         this->aspeed = t.aspeed;
@@ -99,3 +100,7 @@ public:
 
 
 };
+std::ostream& operator<<(std::ostream& out, const tower &t){
+    out << "Locatia turnului e:(" << t.loc.x << ", " << t.loc.y <<") \nTurnul are un damage de: " << t.adamage <<" si ataca la fiecare " << t.aspeed << " secunde";
+    return out;
+}
