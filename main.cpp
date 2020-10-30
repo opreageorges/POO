@@ -16,7 +16,8 @@ int main()
         std::cout << map[0][2] << "\n";
         Enemy en(start_time, map, start);
         //CLEAR;
-        tower t1(start_time, start), t2 = t1;
-
+        tower t1(start_time, start), t2(11 , start);
+        t2 = t1;
+        std::cout << t2.getstime() << "\n";
     return 0;
 }

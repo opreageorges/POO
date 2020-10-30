@@ -70,8 +70,17 @@ public:
     }
 
     ~tower(){
-        std::cout << "Turnul s-a distrus";
+        std::cout << "Turnul s-a distrus \n";
     }
+
+    tower operator=(const tower &t){
+        std::cout << "= \n";
+        this->stime = t.stime;
+        this->aspeed = t.aspeed;
+        this->adamage = t.adamage;
+        this->loc = t.loc;
+    }
+
     tower(const tower &t){
          std::cout << "copy \npaste \n";
          this->stime = t.stime;
