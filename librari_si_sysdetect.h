@@ -3,10 +3,9 @@
 #include <vector>
 #include <unistd.h>
 
-
 #ifdef _WIN32
-#define CLEAR system(" cls ");
+    #define CLEAR system("cls");
 #else
-#define CLEAR system("clear");
+    #define CLEAR system("clear");
 #endif
 
