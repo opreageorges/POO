@@ -3,7 +3,6 @@
 #include "functi.h"
 
 
-//main-ul nu face mai nimic
 int main()
 {
         std::vector<std::vector<int>> map(5, std::vector<int>(5));
