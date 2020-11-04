@@ -9,16 +9,19 @@ class Enemy{
     int stime;
 
 public:
+
     Enemy(int time, std::vector<std::vector<int>> map, pos xy = {0,0}  ){
         this->map = map;
         this->stime = time;
         this->loc = xy;
     }
+
     //Locatia inamicului
     pos getpos(){
         //std::cout << loc.x << " " << loc.y;
         return loc;
     }
+
     void takedamage(int damage){
         this->health = this->health - damage;
     }
@@ -28,21 +31,21 @@ public:
         else
             return false;
     }
-    int move(int time){
+    int move(int time, char x){
         //Coloanele din margine si ultima linie(mai putin iesirea) mereu vor fi peret
-        if (-this->stime + time >= this->mspeed) {
+        enum swi{ D, L, R };
+        if ( time - this->stime >= this->mspeed) {
             this->stime += mspeed;
-            if (this->map[this->loc.x][this->loc.y] == 6587)
-                return 0;
-            else if (this->map[this->loc.x - 1][this->loc.y] == 1 || this->map[this->loc.x - 1][this->loc.y] == 6587) {
-                this->loc.x = this->loc.x - 1;
-                return 1;
-            } else if (this->map[this->loc.x][this->loc.y - 1] == 1) {
-                this->loc.y = this->loc.y - 1;
-                return 1;
-            } else if (this->map[this->loc.x][this->loc.y + 1] == 1) {
-                this->loc.y = this->loc.y + 1;
-                return 1;
+            switch (swi(x)) {
+                case D:
+                    this->loc.x++;
+                    break;
+                case L:
+                    this->loc.y--;
+                    break;
+                case R:
+                    this->loc.y++;
+                    break;
             }
         }
         return -1;
@@ -57,10 +60,13 @@ class tower{
     pos loc;
     int stime;
     friend std::ostream& operator<<(std::ostream& out, const tower &t);
+
 public:
+
     pos const getpos(){
         return loc;
     }
+
     int const getstime(){
         return stime;
     }
@@ -80,6 +86,7 @@ public:
         this->aspeed = t.aspeed;
         this->adamage = t.adamage;
         this->loc = t.loc;
+        return *this;
     }
 
     tower(const tower &t){
@@ -89,6 +96,7 @@ public:
          this->adamage = t.adamage;
          this->loc = t.loc;
     }
+
     int attack(int time){
         if (-this->stime - time >= this->aspeed) {
             this->stime = time;
@@ -100,6 +108,7 @@ public:
 
 
 };
+
 std::ostream& operator<<(std::ostream& out, const tower &t){
     out << "Locatia turnului e:(" << t.loc.x << ", " << t.loc.y <<") \nTurnul are un damage de: " << t.adamage <<" si ataca la fiecare " << t.aspeed << " secunde";
     return out;
