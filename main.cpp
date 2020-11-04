@@ -47,10 +47,10 @@ int main()
                 //break;
         };
         // Cmd-ul din windows se inchide automat
-    #ifdef _WIN32
-        std::cout << "(apasa pe orice tasta apoi pe enter)\n";
-        int t;
-        std::cin >> t;
-    #endif
+        #ifdef _WIN32
+            std::cout << "(apasa pe orice tasta apoi pe enter)\n";
+            int t;
+            std::cin >> t;
+        #endif
     return 0;
 }
