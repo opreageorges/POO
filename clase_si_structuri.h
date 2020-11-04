@@ -35,7 +35,9 @@ public:
         //Coloanele din margine si ultima linie(mai putin iesirea) mereu vor fi peret
         enum swi{ D, L, R };
         if ( time - this->stime >= this->mspeed) {
+
             this->stime += mspeed;
+
             switch (swi(x)) {
                 case D:
                     this->loc.x++;
@@ -47,6 +49,7 @@ public:
                     this->loc.y++;
                     break;
             }
+
         }
         return -1;
     }
@@ -72,6 +75,7 @@ public:
     }
 
     tower(int time, pos loc){
+        std::cout << "\nTrunul a fost creat\n";
         this->stime = time;
         this->loc = loc;
     }
