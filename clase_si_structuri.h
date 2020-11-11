@@ -62,6 +62,7 @@ class tower{
     int aspeed = 20;
     pos loc;
     int stime;
+    int price = 20;
     friend std::ostream& operator<<(std::ostream& out, const tower &t);
 
 public:
