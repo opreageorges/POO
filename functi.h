@@ -1,6 +1,6 @@
 // O metoda fara chesti complicate de a goli ecranul
 void clearscreen(){
-    for (int i=0; i<1000; i++){
+    for (int i=0; i<100; i++){
         std::cout << '\n';
     }
 }

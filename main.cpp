@@ -2,7 +2,7 @@
 #include <ctime>
 #include <vector>
 #include <unistd.h>
-#include <limits>
+//#include <limits>
 #include "clase_si_structuri.h"
 #include "functi.h"
 
