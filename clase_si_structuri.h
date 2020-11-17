@@ -32,7 +32,7 @@ public:
             return false;
     }
     int move(int time, char x){
-        //Coloanele din margine si ultima linie(mai putin iesirea) mereu vor fi peret
+        //Coloanele din margine si ultima linie(mai putin iesirea) mereu vor fi pereti
         enum swi{ D, L, R };
         if ( time - this->stime >= this->mspeed) {
 
@@ -64,7 +64,7 @@ class tower{
     int stime;
     int price = 20;
     friend std::ostream& operator<<(std::ostream& out, const tower &t);
-
+    
 public:
 
     pos const getpos(){

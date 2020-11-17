@@ -1,4 +1,8 @@
-#include "librari.h"
+#include <iostream>
+#include <ctime>
+#include <vector>
+#include <unistd.h>
+#include <limits>
 #include "clase_si_structuri.h"
 #include "functi.h"
 
@@ -12,7 +16,7 @@ int main(){
     int start_time = time(nullptr), wol = 2;
     pos start;
     int player_h = 100;
-    
+
     map = {{178, 178, 88,  178, 178},
            {178, 84,  186, 178, 178},
            {178, 201, 188, 178, 178},
