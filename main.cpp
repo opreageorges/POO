@@ -2,32 +2,58 @@
 #include <ctime>
 #include <vector>
 #include <unistd.h>
-//#include <limits>
-#include "clase_si_structuri.h"
-#include "functi.h"
+#include "Clase/Harta.h"
+#include "Clase/Enemy.h"
+#include "Clase/Tower.h"
 
+// O metoda fara chesti complicate de a goli ecranul
+void clearscreen(){
+    for (int i=0; i<100; i++){
+        std::cout << '\n';
+    }
+}
 
-int main(){
+//Afiseaza mesajul de la sfarsit
+void endgame(int x){
+    switch (x) {
+        case 1:
+            std::cout << "AI PIERDUT ;(\n";
+            break;
+        case 2:
+            std::cout << "AI CASTIGAT\n";
+            break;
+        default:
+            break;
 
-    std::vector<std::vector<int>> map(5, std::vector<int>(5));
+    }
+}
+
+//Pentru a nu scrie de mana pozitiile turnurilor, in caz ca se modifica harta
+void pozitiaturnurilor(const std::vector<std::vector<int>> &map, std::vector<pos> &pos_tur){
+    for (int i = 0; i < map.size(); i++ ){
+        for (int j = 0; j < map[0].size(); j++ ){
+            if(map[i][j] == 84){
+                pos_tur.push_back({i, j});
+            }
+        }
+    }
+}
+
+int main() {
+
     std::vector<pos> pos_tur;
-    std::vector<Enemy*> inamici;
-    std::vector<tower*> turnuri;
+    std::vector<Enemy *> inamici;
+    std::vector<Tower *> turnuri;
     int start_time = time(nullptr), wol = 2;
-    pos start;
+    Harta map;
     int player_h = 100;
 
-    map = {{178, 178, 88,  178, 178},
-           {178, 84,  186, 178, 178},
-           {178, 201, 188, 178, 178},
-           {178, 186, 84,  178, 178},
-           {84,  88,  178, 178, 178}};
+    map.importmap("map1");
 
-    for(int i = 0; i<map[0].size(); i++) {
-        if (map[0][i] == 88)
-            start = {0, i};
-    }
-
+    std::cout << map;
+    return 0;
+}
+/*
     pozitiaturnurilor(map, pos_tur);
 
     std::string dif;
@@ -83,16 +109,11 @@ int main(){
             break;
         }
         //break;
-    };
+    }
 
     for(auto & i : turnuri)
         delete i;
 
-    // Cmd-ul din windows se inchide automat
-    #ifdef _WIN32
-        std::cout << "(apasa pe orice tasta apoi pe enter)\n";
-        int t;
-        // std::cin >> t;
-    #endif
     return 0;
 }
+*/

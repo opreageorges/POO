@@ -3,4 +3,4 @@ project(POO)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(POO main.cpp librari_si_sysdetect.h clase_si_structuri.h functi.h)
+add_executable(POO main.cpp Clase/Harta.cpp Clase/Enemy.cpp Clase/Tower.cpp)
