@@ -1,4 +1,3 @@
-// Resure -> DLL le-am pus acolo sa nu le pierd
 #include <iostream>
 //#include <ctime>
 #include <vector>
@@ -23,6 +22,7 @@ bool endgame(bool x, const sf::Font &arial){
 
     end_tx.setPosition(sf::Vector2f(30.f, (300.f/2.f-100.f)));
     end_sub_tx.setPosition(sf::Vector2f(30.f, (300.f/2.f-100.f +100.f)));
+
     if (x) {
         end_tx.setString("AI CASTIGAT!");
         end_tx.setFillColor(sf::Color::Green);
@@ -89,11 +89,14 @@ int difficulty(const sf::Font &arial){
                 break;
 
         }
+
         fun_dificultati[i].setFillColor(culoare);
         fun_dificultati[i].setPosition(sf::Vector2f(500/2-100, 50*(i+1) + 75*i ));
+
         tx_dificultati[i].setFillColor(sf::Color::Black);
         tx_dificultati[i].setPosition(fun_dificultati[i].getPosition());
         tx_dificultati[i].setCharacterSize(72);
+
         diff.draw(fun_dificultati[i]);
         diff.draw(tx_dificultati[i]);
 
@@ -129,7 +132,7 @@ int difficulty(const sf::Font &arial){
 }
 
 bool startgame(const sf::Font &arial){
-    int diff = difficulty(arial);
+    int diff = difficulty(arial), player_health = 100, money = 100/diff;
     std::string map_name;
 
     bool i = true;

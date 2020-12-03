@@ -25,19 +25,15 @@ const sf::Texture & Harta::getback(){
     return background;
 }
 
+const sf::Vector2f &Harta::getstart(){
+    return start;
+}
 
-//void Harta::pos_turnuri(std::vector<pos> &trn){
-//    trn.reserve(3);
-//    for(int i = 0; i < map.size(); i++){
-//        for(int j = 0; j < map[i].size(); j++){
-//            if(map[i][j] == 'T'){
-//                trn.push_back({i , j});
-//            }
-//        }
-//    }
-//}
-//
-//void Harta::no_tower(const pos &turn){
-//
-//    map[turn.x][turn.y] = ' ';
-//}
+const std::vector<int> &Harta::getlungimi(){
+    return lungimi;
+}
+
+const std::vector<char> &Harta::getdirectii(){
+    return directii;
+}
+

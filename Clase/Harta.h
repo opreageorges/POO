@@ -8,6 +8,7 @@
 #include <string>
 
 class Harta {
+    // Testure practic e o clasa, se pune drept compunere? :)
     sf::Texture background;
     sf::Vector2f start;
     std::vector<int> lungimi;
@@ -18,6 +19,12 @@ public:
 
     //Returneaza textura harti
     const sf::Texture &getback();
+
+    const sf::Vector2f &getstart();
+
+    const std::vector<int> &getlungimi();
+
+    const std::vector<char> &getdirectii();
 
 
 };
