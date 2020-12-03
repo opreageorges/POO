@@ -5,35 +5,58 @@
 //#include <unistd.h>
 #include "SFML/Graphics.hpp"
 //#include "Clase/Structuri.h"
-//#include "Clase/Harta.h"
+#include "Clase/Harta.h"
 //#include "Clase/Enemy.h"
 //#include "Clase/Tower.h"
 
 //Afiseaza mesajul de la sfarsit
-void endgame(int x){
-    sf::Font arial;
-    arial.loadFromFile("../Resurse/ArialUnicodeMS.ttf");
+bool endgame(bool x, const sf::Font &arial){
+    sf::RenderWindow endgame(sf::VideoMode(700,300),"Jocul s-a terminat", sf::Style::Close);
+    endgame.clear();
 
-    sf::Text end_tx;
-    switch (x) {
-        case 1:
-            end_tx.setString( "AI PIERDUT ;(");
-            break;
-        case 2:
-            std::cout << "AI CASTIGAT\n";
-            break;
-        default:
-            break;
+    sf::Text end_tx, end_sub_tx;
+    end_tx.setFont(arial);
+    end_sub_tx.setFont(arial);
 
+    end_tx.setCharacterSize(100);
+    end_sub_tx.setCharacterSize(24);
+
+    end_tx.setPosition(sf::Vector2f(30.f, (300.f/2.f-100.f)));
+    end_sub_tx.setPosition(sf::Vector2f(30.f, (300.f/2.f-100.f +100.f)));
+    if (x) {
+        end_tx.setString("AI CASTIGAT!");
+        end_tx.setFillColor(sf::Color::Green);
     }
+    else{
+        end_tx.setString("AI PIERDUT ;(" );
+        end_tx.setFillColor(sf::Color::Red);
+    }
+    end_sub_tx.setString("Apasa R pentru a juca inca o data");
+    end_tx.setFillColor(sf::Color::Green);
+    endgame.draw(end_tx);
+    endgame.draw(end_sub_tx);
+    endgame.display();
+
+    sf::Event event;
+
+    while(endgame.isOpen()) {
+        while (endgame.pollEvent(event)) {
+            switch (event.type) {
+                case sf::Event::Closed:
+                    return false;
+                case sf::Event::KeyPressed:
+                    if (event.key.code == sf::Keyboard::R) {
+                        return true;
+                    }
+            }
+        }
+    }
+    return false;
 }
 
-int difficulty(){
-    sf::RenderWindow diff(sf::VideoMode(500, 500), "Alege nivelul de dificultate");
+int difficulty(const sf::Font &arial){
+    sf::RenderWindow diff(sf::VideoMode(500, 500), "Alege nivelul de dificultate", sf::Style::Titlebar);
     diff.clear();
-
-    sf::Font arial;
-    arial.loadFromFile("../Resurse/ArialUnicodeMS.ttf");
 
     std::vector<sf::RectangleShape> fun_dificultati;
     std::vector<sf::Text> tx_dificultati;
@@ -62,6 +85,8 @@ int difficulty(){
                 tx_dificultati[i].setString("Greu");
                 culoare = sf::Color::Red;
                 break;
+            default:
+                break;
 
         }
         fun_dificultati[i].setFillColor(culoare);
@@ -76,18 +101,14 @@ int difficulty(){
     }
     diff.display();
 
+    sf::Event event;
     while(diff.isOpen()){
-        sf::Event event;
+
         while (diff.pollEvent(event))
         {
             switch (event.type) {
                 case sf::Event::Closed:
                     diff.close();
-                case sf::Event::KeyPressed:
-                    if (event.key.code == sf::Keyboard::Q) {
-                        diff.close();
-                    }
-                    break;
                 case sf::Event::MouseButtonPressed:
                     //std::cout << sf::Mouse::getPosition(diff).x << " " << sf::Mouse::getPosition(diff).y << '\n'
                     // << fun_dificultati[1].getPosition().x << " " << fun_dificultati[1].getPosition().y <<'\n';
@@ -96,8 +117,10 @@ int difficulty(){
                         (sf::Mouse::getPosition(diff).x < fun_dificultati[i].getPosition().x+200 && sf::Mouse::getPosition(diff).y < fun_dificultati[i].getPosition().y+75))
                             return i;
                     }
+                    break;
                 case sf::Event::Resized:
                     diff.display();
+                    break;
             }
         }
     }
@@ -105,20 +128,33 @@ int difficulty(){
     return -1;
 }
 
+bool startgame(const sf::Font &arial){
+    int diff = difficulty(arial);
+    std::string map_name;
 
-int main() {
-    short int diff;
-    diff = difficulty();
+    bool i = true;
+    while (i) {
+        //Cred ca pot sa fac un text box cu SFML dar e mai simplu asa
+        std::cout << "Introdu numele harti pe care vrei sa o joci:\n map1\n";
+        std::cin >> map_name;
+        if(map_name == "map1")
+            i = false;
+    }
+
     sf::RenderWindow tdgame(sf::VideoMode(800, 600), "Tower Defence", sf::Style::Close);
-    tdgame.close();
-    int i = 1;
-    while(tdgame.isOpen()){
-        if(i < 9) {
-            std::cout << "test" << '\n';
-            i++;
-        }
+    tdgame.clear();
+    sf::Texture test;
+    test.loadFromFile(R"(..\Resurse\Imagini\map1\mapbg.jpg)");
+    sf::Sprite stest(test);
+    stest.setTexture(test);
 
-        sf::Event event;
+    Harta map(map_name);
+
+    tdgame.draw(sf::Sprite(map.getback()));
+    tdgame.display();
+
+    sf::Event event;
+    while(tdgame.isOpen()){
         while (tdgame.pollEvent(event))
         {
             switch (event.type) {
@@ -132,56 +168,16 @@ int main() {
         }
 
     }
+    return true;
 }
-//
-//
-//    std::vector<pos> pos_tur, type_tur;
-//    std::vector<Enemy *> inamici;
-//    std::vector<Tower *> turnuri;
-//    int start_time = time(nullptr), wol = 2, player_h = 100;
-//    Harta map;
-//    map.importmap("map1");
-//    map.pos_turnuri(pos_tur);
-//
-//    std::cout << map;
-//
-//    int diff = difficulty();
-//
-//    clearscreen();
-//
-//    for(pos i : pos_tur){
-//        std::string input;
-//        std::cout << "Construiesti tur pe casuta de la pozitia: ("<< i.x << ", " << i.y <<") ?\n";
-//        std::cout << "Variante:\nDa\nNu\n";
-//        std::cin >> input;
-//        if(input != "Da") {
-//            //std::cout << "Variante: Artilerie....
-//            turnuri.push_back(new Tower(start_time, i));
-//            sleep(1);
-//        }
-//        else{
-//            map.no_tower(i);
-//        }
-//        clearscreen();
-//    }
-//
-//    while (true){
-//        std::cout << map;
-//        sleep(1);
-//        if(turnuri.size()<2) {
-//            wol = 1;
-//        }
-//
-//        if(wol != 0){
-//
-//            endgame(wol);
-//            break;
-//        }
-//
-//    }
-//
-//    for(auto & i : turnuri)
-//        delete i;
-//
-//    return 0;
-//}
+
+int main() {
+    sf::Font arial;
+    bool i = true;
+    while (i) {
+        arial.loadFromFile("../Resurse/ArialUnicodeMS.ttf");
+        bool wol = startgame(arial);
+        i = endgame(wol, arial);
+    }
+
+}
