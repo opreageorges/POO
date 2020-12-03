@@ -1,27 +1,31 @@
-//
-// Created by George on 11/29/2020.
-//
 
 #ifndef FUNCTI_H_HARTA_H
 #define FUNCTI_H_HARTA_H
-
+#include <iostream>
 #include <fstream>
 #include <vector>
 #include <string>
 #include "Structuri.h"
-
 
 class Harta {
     std::vector<std::string> map;
     pos start;
 public:
 
+    //Afiseaza harta
     friend std::ostream &operator<<(std::ostream& out, Harta &h);
 
+    //Returneaza harta
     const std::vector<std::string> &exportmap();
 
-    void importmap(std::string numele_harti);
+    //Importa harta din fisier
+    void importmap(const std::string &numele_harti);
 
+    //Pentru a afla pozitia turnurilor
+    void pos_turnuri(std::vector<pos> &trn);
+
+    //Pentru a sterge reprentarea trunurilor de pe harta
+    void no_tower(const pos &turn);
 };
 
 
