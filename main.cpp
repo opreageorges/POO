@@ -1,119 +1,183 @@
+// Resure -> DLL le-am pus acolo sa nu le pierd
 #include <iostream>
-#include <ctime>
+//#include <ctime>
 #include <vector>
-#include <unistd.h>
+//#include <unistd.h>
+#include "SFML/Graphics.hpp"
+//#include "Clase/Structuri.h"
 #include "Clase/Harta.h"
-#include "Clase/Enemy.h"
-#include "Clase/Tower.h"
-
-// O metoda fara chesti complicate de a goli ecranul
-void clearscreen(){
-    for (int i=0; i<100; i++){
-        std::cout << '\n';
-    }
-}
+//#include "Clase/Enemy.h"
+//#include "Clase/Tower.h"
 
 //Afiseaza mesajul de la sfarsit
-void endgame(int x){
-    switch (x) {
-        case 1:
-            std::cout << "AI PIERDUT ;(\n";
-            break;
-        case 2:
-            std::cout << "AI CASTIGAT\n";
-            break;
-        default:
-            break;
+bool endgame(bool x, const sf::Font &arial){
+    sf::RenderWindow endgame(sf::VideoMode(700,300),"Jocul s-a terminat", sf::Style::Close);
+    endgame.clear();
 
+    sf::Text end_tx, end_sub_tx;
+    end_tx.setFont(arial);
+    end_sub_tx.setFont(arial);
+
+    end_tx.setCharacterSize(100);
+    end_sub_tx.setCharacterSize(24);
+
+    end_tx.setPosition(sf::Vector2f(30.f, (300.f/2.f-100.f)));
+    end_sub_tx.setPosition(sf::Vector2f(30.f, (300.f/2.f-100.f +100.f)));
+    if (x) {
+        end_tx.setString("AI CASTIGAT!");
+        end_tx.setFillColor(sf::Color::Green);
     }
-}
+    else{
+        end_tx.setString("AI PIERDUT ;(" );
+        end_tx.setFillColor(sf::Color::Red);
+    }
+    end_sub_tx.setString("Apasa R pentru a juca inca o data");
+    end_tx.setFillColor(sf::Color::Green);
+    endgame.draw(end_tx);
+    endgame.draw(end_sub_tx);
+    endgame.display();
 
-//Pentru a nu scrie de mana pozitiile turnurilor, in caz ca se modifica harta
-void pozitiaturnurilor(const std::vector<std::vector<int>> &map, std::vector<pos> &pos_tur){
-    for (int i = 0; i < map.size(); i++ ){
-        for (int j = 0; j < map[0].size(); j++ ){
-            if(map[i][j] == 84){
-                pos_tur.push_back({i, j});
+    sf::Event event;
+
+    while(endgame.isOpen()) {
+        while (endgame.pollEvent(event)) {
+            switch (event.type) {
+                case sf::Event::Closed:
+                    return false;
+                case sf::Event::KeyPressed:
+                    if (event.key.code == sf::Keyboard::R) {
+                        return true;
+                    }
             }
         }
     }
+    return false;
+}
+
+int difficulty(const sf::Font &arial){
+    sf::RenderWindow diff(sf::VideoMode(500, 500), "Alege nivelul de dificultate", sf::Style::Titlebar);
+    diff.clear();
+
+    std::vector<sf::RectangleShape> fun_dificultati;
+    std::vector<sf::Text> tx_dificultati;
+
+    fun_dificultati.reserve(3);
+    tx_dificultati.reserve(3);
+
+    //Creaza frumusetea de butoane
+    for(int i = 0; i < 3; i++){
+        sf::RectangleShape r(sf::Vector2f(200,75));
+        sf::Text t;
+        fun_dificultati.push_back(r);
+        tx_dificultati.push_back(t);
+        tx_dificultati[i].setFont(arial);
+        sf::Color culoare;
+        switch (i) {
+            case 0:
+                tx_dificultati[i].setString("Usor");
+                culoare = sf::Color::Green;
+                break;
+            case 1:
+                tx_dificultati[i].setString("Mediu");
+                culoare = sf::Color::Yellow;
+                break;
+            case 2:
+                tx_dificultati[i].setString("Greu");
+                culoare = sf::Color::Red;
+                break;
+            default:
+                break;
+
+        }
+        fun_dificultati[i].setFillColor(culoare);
+        fun_dificultati[i].setPosition(sf::Vector2f(500/2-100, 50*(i+1) + 75*i ));
+        tx_dificultati[i].setFillColor(sf::Color::Black);
+        tx_dificultati[i].setPosition(fun_dificultati[i].getPosition());
+        tx_dificultati[i].setCharacterSize(72);
+        diff.draw(fun_dificultati[i]);
+        diff.draw(tx_dificultati[i]);
+
+
+    }
+    diff.display();
+
+    sf::Event event;
+    while(diff.isOpen()){
+
+        while (diff.pollEvent(event))
+        {
+            switch (event.type) {
+                case sf::Event::Closed:
+                    diff.close();
+                case sf::Event::MouseButtonPressed:
+                    //std::cout << sf::Mouse::getPosition(diff).x << " " << sf::Mouse::getPosition(diff).y << '\n'
+                    // << fun_dificultati[1].getPosition().x << " " << fun_dificultati[1].getPosition().y <<'\n';
+                    for(int i : {0,1,2}) {
+                        if((sf::Mouse::getPosition(diff).x > fun_dificultati[i].getPosition().x && sf::Mouse::getPosition(diff).y > fun_dificultati[i].getPosition().y) &&
+                        (sf::Mouse::getPosition(diff).x < fun_dificultati[i].getPosition().x+200 && sf::Mouse::getPosition(diff).y < fun_dificultati[i].getPosition().y+75))
+                            return i;
+                    }
+                    break;
+                case sf::Event::Resized:
+                    diff.display();
+                    break;
+            }
+        }
+    }
+
+    return -1;
+}
+
+bool startgame(const sf::Font &arial){
+    int diff = difficulty(arial);
+    std::string map_name;
+
+    bool i = true;
+    while (i) {
+        //Cred ca pot sa fac un text box cu SFML dar e mai simplu asa
+        std::cout << "Introdu numele harti pe care vrei sa o joci:\n map1\n";
+        std::cin >> map_name;
+        if(map_name == "map1")
+            i = false;
+    }
+
+    sf::RenderWindow tdgame(sf::VideoMode(800, 600), "Tower Defence", sf::Style::Close);
+    tdgame.clear();
+    sf::Texture test;
+    test.loadFromFile(R"(..\Resurse\Imagini\map1\mapbg.jpg)");
+    sf::Sprite stest(test);
+    stest.setTexture(test);
+
+    Harta map(map_name);
+
+    tdgame.draw(sf::Sprite(map.getback()));
+    tdgame.display();
+
+    sf::Event event;
+    while(tdgame.isOpen()){
+        while (tdgame.pollEvent(event))
+        {
+            switch (event.type) {
+                case sf::Event::Closed:
+                    tdgame.close();
+                case sf::Event::KeyPressed:
+                    if (event.key.code == sf::Keyboard::Q) {
+                        tdgame.close();
+                    }
+            }
+        }
+
+    }
+    return true;
 }
 
 int main() {
+    sf::Font arial;
+    bool i = true;
+    while (i) {
+        arial.loadFromFile("../Resurse/ArialUnicodeMS.ttf");
+        bool wol = startgame(arial);
+        i = endgame(wol, arial);
+    }
 
-    std::vector<pos> pos_tur;
-    std::vector<Enemy *> inamici;
-    std::vector<Tower *> turnuri;
-    int start_time = time(nullptr), wol = 2;
-    Harta map;
-    int player_h = 100;
-
-    map.importmap("map1");
-
-    std::cout << map;
-    return 0;
 }
-/*
-    pozitiaturnurilor(map, pos_tur);
-
-    std::string dif;
-    while (true) {
-        std::cout << "Alege dificultatea:\nGreu\nMediu\nUsor\n";
-        std::cin >> dif;
-        if(dif == "Greu" || dif == "Mediu" || dif == "Usor")
-            break;
-        else {
-            std::cout << "Dificultatea aleasa nu exista\n";
-            sleep(1);
-            clearscreen();
-        }
-    }
-
-    clearscreen();
-
-
-    for(pos i : pos_tur){
-        std::string input;
-        std::cout << "Construiesti tur pe casuta de la pozitia: ("<< i.x << ", " << i.y <<") ?\n";
-        std::cout << "Variante:\nDa\nNu\n";
-        std::cin >> input;
-        if(input == "Da") {
-            //std::cout << "Variante: Artilerie....
-            turnuri.push_back(new tower(start_time, i));
-            sleep(1);
-        }
-        else{
-            map[i.x][i.y] = 178;
-        }
-        clearscreen();
-    }
-
-    while (true){
-        sleep(1);
-        if(turnuri.size()<2)
-            wol = 1;
-
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
-                if (map[i][j] > 10) {
-                    char x = map[i][j];
-                    std::cout << x;
-                } else
-                    std::cout << map[i][j];
-            }
-            std::cout << "\n";
-        }
-
-        if(wol != 0){
-            endgame(wol);
-            break;
-        }
-        //break;
-    }
-
-    for(auto & i : turnuri)
-        delete i;
-
-    return 0;
-}
-*/

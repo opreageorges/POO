@@ -1,26 +1,24 @@
-//
-// Created by George on 11/29/2020.
-//
 
 #ifndef FUNCTI_H_HARTA_H
 #define FUNCTI_H_HARTA_H
-
+#include "SFML/Graphics.hpp"
 #include <fstream>
+#include <iostream>
 #include <vector>
 #include <string>
-#include "Structuri.h"
-
 
 class Harta {
-    std::vector<std::string> map;
-    pos start;
+    sf::Texture background;
+    sf::Vector2f start;
+    std::vector<int> lungimi;
+    std::vector<char> directii;
 public:
+    //Creaza harta
+    explicit Harta(const std::string&);
 
-    friend std::ostream &operator<<(std::ostream& out, Harta &h);
+    //Returneaza textura harti
+    const sf::Texture &getback();
 
-    const std::vector<std::string> &exportmap();
-
-    void importmap(std::string numele_harti);
 
 };
 
