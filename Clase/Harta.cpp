@@ -3,7 +3,7 @@
 Harta::Harta(const std::string& nume_in){
     nume = nume_in;
     //Seteaza calea pana la fisierele hartii
-    std::string path_bg , path_pct, path_tower;
+    std::string path_bg, path_pct, path_tower;
     path_bg = "../Resurse/Imagini/"+ nume +"/mapbg.jpg";
     path_pct = "../Resurse/Imagini/"+ nume +"/Puncte";
     path_tower = "../Resurse/Imagini/"+ nume +"/Turnuri";
