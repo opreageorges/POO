@@ -1,25 +1,18 @@
 #include "Enemy.h"
 
-Enemy::Enemy(int time, Harta map, pos xy = {0,0}){
-    this->map = map;
+Enemy::Enemy(int time, sf::Vector2i xy = {0,0}){
     this->stime = time;
     this->loc = xy;
 }
 
-pos Enemy::getpos(){
+sf::Vector2i Enemy::getpos() const{
     //std::cout << loc.x << " " << loc.y;
     return loc;
 }
 
-void Enemy::takedamage(int damage){
+bool Enemy::takedamage(int damage){
     this->health = this->health - damage;
-}
-
-bool Enemy::isAlive(){
-    if (this->health >= 1)
-        return true;
-    else
-        return false;
+    return health > 0;
 }
 
 int Enemy::move(int time, char x){

@@ -1,24 +1,20 @@
 #ifndef FUNCTI_H_ENEMY_H
 #define FUNCTI_H_ENEMY_H
-#include "Harta.h"
+#include "SFML/Graphics.hpp"
 
 class Enemy {
-    pos loc;
-    Harta map;
+    sf::Vector2i loc;
     int health = 100;
     int mspeed = 20;
     int stime;
 
 public:
-    Enemy(int time, Harta map, pos xy);
+    Enemy(int time, sf::Vector2i xy);
     //Arata pozitia inamicului
-    pos getpos();
+    sf::Vector2i getpos() const;
 
     //Scade viata inamicului
-    void takedamage(int damage);
-
-    //Verifica daca inamicul mai e in viata
-    bool isAlive();
+    bool takedamage(int damage);
 
     //Misca inamicul
     int move(int time, char x);

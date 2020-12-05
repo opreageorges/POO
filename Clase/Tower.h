@@ -3,38 +3,45 @@
 #include <iostream>
 #include "SFML/Graphics.hpp"
 
-class Base_Tower {
+//Baza pentru turnuri
+
+class Tower{
+    sf::Vector2i loc;
+
 protected:
     int adamage;
     int aspeed;
-    sf::Vector2i loc;
     int price;
 
 public:
-    //Base_Tower(const Base_Tower &t);
-    //Base_Tower& operator=(const Base_Tower &t);
-    //std::ostream& operator<<(std::ostream& out) const;
 
-    //Arata pozitia turnului
-    virtual sf::Vector2i getpos() const = 0;
+    explicit Tower(sf::Vector2i) ;
+    Tower(const Tower &t);
 
-    virtual const sf::IntRect &getBorder() const = 0;
+    std::ostream& operator<<(std::ostream& out) const;
 
-    virtual  int getAdamage() const = 0;
+    sf::Vector2i getpos() const;
 
-    virtual int getAspeed() const = 0;
+    int getAdamage() const;
 
-    virtual ~Base_Tower() =0 ;
+    int getAspeed() const;
 
+    int getPrice() const;
+
+    virtual bool atack(std::vector<int>) = 0;
+
+    virtual ~Tower(){};
 };
 
-class Normal_tower:Base_Tower{
+// Un turn care ataca rapid cu putin damage
+
+class Fast_tower: public Tower{
+
 public:
-    Normal_tower(sf::Vector2i);
-    Normal_tower(const Normal_tower &t);
+    explicit Fast_tower(const sf::Vector2i &i);
 
+    bool atack(std::vector<int>) override;
 };
-
 
 
 #endif //FUNCTI_H_TOWER_H

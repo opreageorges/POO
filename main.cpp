@@ -3,7 +3,7 @@
 #include "SFML/Graphics.hpp"
 #include "Clase/Harta.h"
 //#include "Clase/Enemy.h"
-//#include "Clase/Tower.h"
+#include "Clase/Tower.h"
 
 //Afiseaza mesajul de la sfarsit
 bool endgame(bool x, const sf::Font &arial){
@@ -123,11 +123,9 @@ int difficulty(const sf::Font &arial){
                             return i+1;
                     }
                     break;
-                case sf::Event::Resized:
-                    diff.display();
-                    break;
             }
         }
+        sf::sleep(sf::milliseconds(30));
     }
 
     return -1;
@@ -191,7 +189,7 @@ bool startgame(const sf::Font &arial, bool debug){
         tdgame.display();
 
         //Fara linia asta ia foc placa video
-        sf::sleep(sf::milliseconds(4));
+        sf::sleep(sf::milliseconds(100));
     }
     if (player_health > 0)
         return true;
