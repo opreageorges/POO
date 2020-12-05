@@ -1,34 +1,40 @@
 #ifndef FUNCTI_H_TOWER_H
 #define FUNCTI_H_TOWER_H
 #include <iostream>
-#include "Structuri.h"
+#include "SFML/Graphics.hpp"
 
-class Tower {
-    int adamage = 50;
-    int aspeed = 20;
-    pos loc;
-    int stime;
-    //int price = 20;
-   // friend std::ostream& operator<<(std::ostream& out, const Tower &t);
+class Base_Tower {
+protected:
+    int adamage;
+    int aspeed;
+    sf::Vector2i loc;
+    int price;
 
 public:
-    Tower(int time, pos loc);
-
-    Tower(const Tower &t);
-    Tower& operator=(const Tower &t);
-    std::ostream& operator<<(std::ostream& out);
+    //Base_Tower(const Base_Tower &t);
+    //Base_Tower& operator=(const Base_Tower &t);
+    //std::ostream& operator<<(std::ostream& out) const;
 
     //Arata pozitia turnului
-    pos const getpos();
+    virtual sf::Vector2i getpos() const = 0;
 
-    //Timpul la care s-a interactiona ultima data cu turnul
-    int const getstime();
+    virtual const sf::IntRect &getBorder() const = 0;
 
-    //Verifica daca turnul poate sa atace si daca poate o face
-    int attack(int time);
+    virtual  int getAdamage() const = 0;
 
-    ~Tower();
+    virtual int getAspeed() const = 0;
+
+    virtual ~Base_Tower() =0 ;
 
 };
+
+class Normal_tower:Base_Tower{
+public:
+    Normal_tower(sf::Vector2i);
+    Normal_tower(const Normal_tower &t);
+
+};
+
+
 
 #endif //FUNCTI_H_TOWER_H

@@ -1,51 +1,63 @@
 #include "Tower.h"
 
-Tower::Tower(int time, pos loc){
+//Tower::Tower(const sf::Vector2i &loc){
+//    std::cout << "\nTrunul a fost creat\n";
+//    this->loc = loc;
+//    sf::IntRect bor(loc, sf::Vector2i(62,62));
+//}
+//
+//Tower::Tower(const Tower &t){
+//    std::cout << "copy \npaste \n";
+//    this->aspeed = t.aspeed;
+//    this->adamage = t.adamage;
+//    this->loc = t.loc;
+//
+//}
+//
+//Tower& Tower::operator=(const Tower &t){
+//    std::cout << "= \n";
+//    this->aspeed = t.aspeed;
+//    this->adamage = t.adamage;
+//    this->loc = t.loc;
+//    return *this;
+//}
+//
+//sf::Vector2i Tower::getpos() const{
+//    return loc;
+//}
+//
+//std::ostream& Tower::operator<<(std::ostream& out) const{
+//    out << "Locatia turnului e:(" << loc.x << ", " << loc.y <<") \nTurnul are un damage de: " << adamage <<" si ataca la fiecare " << aspeed << " secunde";
+//    return out;
+//}
+//
+//int Tower::getAdamage() const {
+//    return adamage;
+//}
+//
+//int Tower::getAspeed() const {
+//    return aspeed;
+//}
+//
+//const sf::IntRect &Tower::getBorder() const {
+//    return border;
+//}
+//
+//Tower::~Tower(){
+//    std::cout << "Turnul s-a distrus \n";
+//}
+
+
+
+
+Normal_tower::Normal_tower(sf::Vector2i) {
     std::cout << "\nTrunul a fost creat\n";
-    this->stime = time;
-    this->loc.x = loc.x;
-    this->loc.y = loc.y;
+    this->loc = loc;
 }
 
-Tower::Tower(const Tower &t){
-    std::cout << "copy \npaste \n";
-    this->stime = t.stime;
-    this->aspeed = t.aspeed;
+Normal_tower::Normal_tower(const Normal_tower &t) {
     this->adamage = t.adamage;
-    this->loc.x = t.loc.x;
-    this->loc.y = t.loc.y;
-}
-
-Tower& Tower::operator=(const Tower &t){
-    std::cout << "= \n";
-    this->stime = t.stime;
     this->aspeed = t.aspeed;
-    this->adamage = t.adamage;
     this->loc = t.loc;
-    return *this;
-}
-
-pos const Tower::getpos(){
-    return loc;
-}
-
-int const Tower::getstime(){
-    return stime;
-}
-
-int Tower::attack(int time){
-    if (time - this->stime >= this->aspeed) {
-        this->stime = time;
-        return adamage;
-    }
-    return 0;
-}
-
-std::ostream& Tower::operator<<(std::ostream& out){
-    out << "Locatia turnului e:(" << loc.x << ", " << loc.y <<") \nTurnul are un damage de: " << adamage <<" si ataca la fiecare " << aspeed << " secunde";
-    return out;
-}
-
-Tower::~Tower(){
-    std::cout << "Turnul s-a distrus \n";
+    this->price = t.price;
 }

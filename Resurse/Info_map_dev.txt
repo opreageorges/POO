@@ -8,3 +8,8 @@ lungime_cotitura_1 directie
 .
 .
 lungime_cotitura_n directie
+
+
+//Template turnuri
+//Marimea unui turn <62px
+x y (coordonatele la care se afla turnul)
