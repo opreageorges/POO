@@ -27,12 +27,13 @@ Harta::Harta(const std::string& nume_in){
     //Citeste locatia turnurilor
     in.open(path_tower);
     in >> n;
-    turnuri.reserve(n);
+    towers.reserve(n);
+    tower_spot.reserve(n);
     for(int i = 0; i < n;i++){
         int x,y;
         in >> x >> y;
         sf::IntRect r(sf::Vector2i(x,y), sf::Vector2i(62,62));
-        turnuri.push_back(r);
+        tower_spot.push_back(r);
     }
     in.close();
 }
@@ -54,18 +55,44 @@ std::vector<char> Harta::getdirectii() const{
 }
 
 sf::IntRect Harta::getonetower(int x) const{
-    return turnuri[x];
+    return tower_spot[x];
 }
 
 std::string Harta::getname() const{
     return nume;
 }
 
-void Harta::removeonetower(int x) {
-    turnuri.erase(turnuri.begin()+x);
+int Harta::transform(int x, int type) {
+    if(type != 0) {
+        Tower* t;
+        int cost;
+        switch (x) {
+            case 1:
+                t = new Fast_tower(sf::Vector2i (tower_spot[x].left,tower_spot[x].top ));
+                towers.push_back(t);
+                break;
+
+
+        }
+        tower_spot.erase(tower_spot.begin() + x);
+        return -(t->getPrice());
+    }
+    else{
+        std::cout << "N-ai suficienti bani \n";
+        return 0;
+    }
 }
 
+
 int Harta::gettowercount() const {
-    return turnuri.size();
+    return tower_spot.size();
 }
+
+Harta::~Harta() {
+    for (auto i : towers)
+        delete i;
+
+}
+
+
 

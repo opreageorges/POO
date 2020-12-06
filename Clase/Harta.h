@@ -2,19 +2,20 @@
 #ifndef FUNCTI_H_HARTA_H
 #define FUNCTI_H_HARTA_H
 #include "SFML/Graphics.hpp"
+#include "Tower.h"
 #include <fstream>
 #include <iostream>
 #include <vector>
 #include <string>
 
 class Harta {
-    // sf::Texture practic e o clasa, se pune drept compunere? :)
     std::string nume;
     sf::Texture background;
     sf::Vector2f start;
     std::vector<int> lungimi;
     std::vector<char> directii;
-    std::vector<sf::IntRect> turnuri;
+    std::vector<sf::IntRect> tower_spot;
+    std::vector<Tower*> towers;
 public:
     //Creaza harta
     explicit Harta(const std::string&);
@@ -35,13 +36,15 @@ public:
     sf::IntRect getonetower(int) const;
 
     //Sterge o pozitie in care poate fi construit un turn
-    void removeonetower(int);
+    int transform(int,int);
 
     //Retruneaza numele hartii
     std::string getname() const;
 
+    //Retruneaza numarul de locuri disponibile pentru construit turnuri
     int gettowercount() const;
 
+    ~Harta();
 };
 
 

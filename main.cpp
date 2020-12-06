@@ -133,7 +133,7 @@ int difficulty(const sf::Font &arial){
 
 // O sa fie o fereastra in care vei alege tipul de turn
 int towertype(){
-    return 1;
+    return 0;
 }
 
 bool startgame(const sf::Font &arial, bool debug){
@@ -179,9 +179,10 @@ bool startgame(const sf::Font &arial, bool debug){
                     break;
                 case sf::Event::MouseButtonPressed:
                     for(int i = 0; i < map.gettowercount() ; i++){
-                        if(map.getonetower(i).contains(sf::Mouse::getPosition(tdgame)))
-                            map.removeonetower(i);
+                        if(map.getonetower(i).contains(sf::Mouse::getPosition(tdgame))) {
                             ttype = towertype();
+                            map.transform(i, ttype);
+                        }
                     }
                     break;
             }

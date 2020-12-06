@@ -16,7 +16,9 @@ protected:
 public:
 
     explicit Tower(sf::Vector2i) ;
+
     Tower(const Tower &t);
+    Tower& operator=(const Tower &t) = default;
 
     std::ostream& operator<<(std::ostream& out) const;
 
@@ -30,7 +32,7 @@ public:
 
     virtual bool atack(std::vector<int>) = 0;
 
-    virtual ~Tower(){};
+    virtual ~Tower() = default;
 };
 
 // Un turn care ataca rapid cu putin damage
