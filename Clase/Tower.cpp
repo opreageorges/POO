@@ -15,13 +15,13 @@ Tower::Tower(const Tower &t) {
     this->price = t.price;
 }
 
-//Tower& Tower::operator=(const Tower &t){
-//    this->adamage = t.adamage;
-//    this->aspeed = t.aspeed;
-//    this->loc = t.loc;
-//    this->price = t.price;
-//    return *this;
-//}
+Tower& Tower::operator=(const Tower &t){
+    this->adamage = t.adamage;
+    this->aspeed = t.aspeed;
+    this->loc = t.loc;
+    this->price = t.price;
+    return *this;
+}
 
 std::ostream& Tower::operator<<(std::ostream& out) const{
     out << "Locatia turnului e:(" << loc.x << ", " << loc.y <<") \nTurnul are un damage de: " << adamage <<" si ataca la fiecare " << aspeed << " secunde";
@@ -55,6 +55,7 @@ Fast_tower::Fast_tower(const sf::Vector2i &i) : Tower(i) {
 }
 
 bool Fast_tower::atack(std::vector<int>) {
+
     int i=1;
     i+=i;
     return true;

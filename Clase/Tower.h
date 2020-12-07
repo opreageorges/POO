@@ -18,7 +18,9 @@ public:
     explicit Tower(sf::Vector2i) ;
 
     Tower(const Tower &t);
-    Tower& operator=(const Tower &t) = default;
+    //Foloseam = default pentru ca imi da warning ca pot face asta
+    // si l-am comentat pe ala facut de mine ca sa vezi ca e facut
+    Tower& operator=(const Tower &t);
 
     std::ostream& operator<<(std::ostream& out) const;
 
