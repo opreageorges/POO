@@ -7,6 +7,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <memory>
 
 class Harta {
     std::string nume;
@@ -15,8 +16,11 @@ class Harta {
     std::vector<int> lungimi;
     std::vector<char> directii;
     std::vector<sf::IntRect> tower_spot;
-    std::vector<Tower*> towers;
+    std::vector<std::unique_ptr<Tower>> towers;
+//    std::vector<Tower*> towers;
+
 public:
+
     //Creaza harta
     explicit Harta(const std::string&);
 
@@ -33,7 +37,7 @@ public:
     std::vector<char> getdirectii () const;
 
     //Returneaza pozitia unui loc in care poate fi construit un turn
-    sf::IntRect getonetower(int) const;
+    sf::IntRect getonetowerspot(int) const;
 
     //Sterge o pozitie in care poate fi construit un turn
     int transform(int,int);
@@ -42,9 +46,18 @@ public:
     std::string getname() const;
 
     //Retruneaza numarul de locuri disponibile pentru construit turnuri
-    int gettowercount() const;
+    int gettowerspotcount();
 
-    ~Harta();
+    //Returneaza numarul de turnuri
+    int gettowerscount();
+
+    //Returneaza un turn construit
+    const std::unique_ptr<Tower> &getTowers(int);
+
+    //Incepe urmatorul rand de inamici
+    bool nextwave();
+
+//    ~Harta();
 };
 
 

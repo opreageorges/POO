@@ -3,13 +3,15 @@
 #include "SFML/Graphics.hpp"
 
 class Enemy {
+protected:
+    sf::Texture texture;
     sf::Vector2i loc;
-    int health = 100;
-    int mspeed = 20;
-    int stime;
+    int health;
+    int mspeed;
 
 public:
-    Enemy(int time, sf::Vector2i xy);
+    explicit Enemy(sf::Vector2i);
+
     //Arata pozitia inamicului
     sf::Vector2i getpos() const;
 
@@ -21,4 +23,7 @@ public:
 
 };
 
+//class Boss:Enemy{
+//
+//};
 #endif //FUNCTI_H_ENEMY_H

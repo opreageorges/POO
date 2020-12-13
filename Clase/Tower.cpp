@@ -32,6 +32,10 @@ sf::Vector2i Tower::getpos() const {
     return loc;
 }
 
+const sf::Texture &Tower::getTexture() const {
+    return texture;
+}
+
 int Tower::getAdamage() const {
     return adamage;
 }
@@ -47,17 +51,62 @@ int Tower::getPrice() const {
 
 
 
+
+
 //Fast tower
 
 Fast_tower::Fast_tower(const sf::Vector2i &i) : Tower(i) {
+    texture.loadFromFile("../Resurse/Imagini/Fast_tower.png");
     adamage = 10;
     aspeed = 10;
+    price = 20;
 }
 
-bool Fast_tower::atack(std::vector<int>) {
+bool Fast_tower::atack(std::vector<Enemy*> inamici) {
+    int t;
+    for (auto i : inamici ){
 
-    int i=1;
-    i+=i;
+    }
+
+    return false;
+}
+
+
+
+
+//Slow tower
+
+Slow_tower::Slow_tower(const sf::Vector2i &i) : Tower(i) {
+    texture.loadFromFile("../Resurse/Imagini/Slow_tower.png");
+    adamage = 40;
+    aspeed = 40;
+    price = 20;
+}
+
+bool Slow_tower::atack(std::vector<Enemy*> inamici) {
+//    for (int i = inamici.size() ){
+//
+//    }
+
     return true;
 }
 
+
+
+
+//Scatter tower
+
+Scatter_tower::Scatter_tower(const sf::Vector2i &i) : Tower(i) {
+    texture.loadFromFile("../Resurse/Imagini/Scatter_tower.png");
+    adamage = 6;
+    aspeed = 45;
+    price = 40;
+}
+
+bool Scatter_tower::atack(std::vector<Enemy*> inamici) {
+    for (auto i : inamici ){
+
+    }
+
+    return true;
+}

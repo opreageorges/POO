@@ -2,13 +2,14 @@
 #define FUNCTI_H_TOWER_H
 #include <iostream>
 #include "SFML/Graphics.hpp"
+#include "Enemy.h"
 
 //Baza pentru turnuri
 
 class Tower{
     sf::Vector2i loc;
-
 protected:
+    sf::Texture texture;
     int adamage;
     int aspeed;
     int price;
@@ -26,13 +27,15 @@ public:
 
     sf::Vector2i getpos() const;
 
+    const sf::Texture &getTexture() const;
+
     int getAdamage() const;
 
     int getAspeed() const;
 
     int getPrice() const;
 
-    virtual bool atack(std::vector<int>) = 0;
+    virtual bool atack(std::vector<Enemy*> inamici) = 0;
 
     virtual ~Tower() = default;
 };
@@ -44,7 +47,25 @@ class Fast_tower: public Tower{
 public:
     explicit Fast_tower(const sf::Vector2i &i);
 
-    bool atack(std::vector<int>) override;
+    bool atack(std::vector<Enemy*> inamici) override;
+};
+
+class Slow_tower: public Tower{
+
+public:
+    explicit Slow_tower(const sf::Vector2i &i);
+
+    bool atack(std::vector<Enemy*> inamici) override;
+};
+
+
+class Scatter_tower: public Tower{
+
+public:
+    explicit Scatter_tower(const sf::Vector2i &i);
+
+    bool atack(std::vector<Enemy*> inamici) override;
+
 };
 
 

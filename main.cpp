@@ -123,6 +123,8 @@ int difficulty(const sf::Font &arial){
                             return i+1;
                     }
                     break;
+
+
             }
         }
         sf::sleep(sf::milliseconds(30));
@@ -132,38 +134,92 @@ int difficulty(const sf::Font &arial){
 }
 
 // O sa fie o fereastra in care vei alege tipul de turn
-int towertype(){
+int towertype(const Harta &map, sf::Font arial, int money){
+    sf::RenderWindow towertypewin(sf::VideoMode(500, 300), "Alege tipul turnului", sf::Style::Close);
+    towertypewin.clear();
+
+    sf::Texture bg_type;
+    std::vector<sf::IntRect> border_type;
+
+    bg_type.loadFromFile("../Resurse/Imagini/TType.png");
+    sf::Sprite s(bg_type);
+    border_type.reserve(3);
+
+    for(int i = 0; i < 3; i++){
+        sf::IntRect bord(0+i*166,0,166,300);
+        border_type.push_back(bord);
+    }
+
+
+    sf::Event event;
+
+    while(towertypewin.isOpen()){
+        towertypewin.draw(s);
+        while (towertypewin.pollEvent(event)) {
+            switch (event.type) {
+                case sf::Event::Closed:
+                    towertypewin.close();
+                    return -1;
+                    break;
+                case sf::Event::MouseButtonPressed:
+                    for(int i = 0; i < 3; i++){
+                        if(border_type[i].contains(sf::Mouse::getPosition(towertypewin))){
+                            towertypewin.close();
+                            if(money >= (20+20*(i/3))){
+                                return i+1;
+                            }
+                            else
+                                return 0;
+                        }
+                    }
+                    break;
+            }
+        }
+        towertypewin.display();
+        sf::sleep(sf::milliseconds(100));
+    }
+
     return 0;
 }
 
 bool startgame(const sf::Font &arial, bool debug){
-    int diff = difficulty(arial), player_health = 100, money = 100/diff;
+
+    int diff =1 /*= difficulty(arial)*/, player_health = 100, money = 100 / diff;
     std::string map_name;
 
-    bool i = true;
-    while (i) {
-        //Cred ca pot sa fac un text box cu SFML dar e mai simplu asa
-        std::cout << "Introdu numele harti pe care vrei sa o joci:\n map1\n";
-        std::cin >> map_name;
-        if(map_name == "map1")
-            i = false;
+    if(!debug) {
+        bool i = true;
+        while (i) {
+            std::cout << "Introdu numele harti pe care vrei sa o joci:\n map1\n";
+            std::cin >> map_name;
+            if (map_name == "map1")
+                i = false;
+        }
+    }
+    else{
+        map_name = "map1";
     }
 
     sf::RenderWindow tdgame(sf::VideoMode(800, 600), "Tower Defence", sf::Style::Close);
     tdgame.clear();
 
     Harta map(map_name);
-    int ttype=0;
+
     sf::Texture build_spot;
     build_spot.loadFromFile("../Resurse/Imagini/Tower_spot.png");
 
     sf::Event event;
     while(tdgame.isOpen()){
         tdgame.draw(sf::Sprite(map.getback()));
-        for(int i = 0; i < map.gettowercount() ; i++){
+        for(int i = 0; i < map.gettowerspotcount() ; i++){
             sf::Sprite spot(build_spot);
-            spot.setPosition(sf::Vector2f (map.getonetower(i).left,map.getonetower(i).top ));
+            spot.setPosition(sf::Vector2f (map.getonetowerspot(i).left,map.getonetowerspot(i).top ));
             tdgame.draw(spot);
+        }
+        for(int i = 0; i < map.gettowerscount() ; i++){
+            sf::Sprite reder_tower(map.getTowers(i)->getTexture());
+            reder_tower.setPosition(map.getTowers(i)->getpos().x, map.getTowers(i)->getpos().y);
+            tdgame.draw(reder_tower);
         }
         while (tdgame.pollEvent(event))
         {
@@ -178,10 +234,13 @@ bool startgame(const sf::Font &arial, bool debug){
                     }
                     break;
                 case sf::Event::MouseButtonPressed:
-                    for(int i = 0; i < map.gettowercount() ; i++){
-                        if(map.getonetower(i).contains(sf::Mouse::getPosition(tdgame))) {
-                            ttype = towertype();
-                            map.transform(i, ttype);
+                    for(int i = 0; i < map.gettowerspotcount() ; i++){
+                        if(map.getonetowerspot(i).contains(sf::Mouse::getPosition(tdgame))) {
+                            int ttype = 0;
+                            ttype = towertype(map, arial, money);
+                            std::cout << ttype << " " << i << "\n\n\n";
+                            money -= map.transform(i, ttype);
+
                         }
                     }
                     break;
@@ -199,7 +258,7 @@ bool startgame(const sf::Font &arial, bool debug){
 }
 
 int main() {
-    bool test_build = 0;
+    bool test_build = 1;
     sf::Font arial;
     bool i = true;
     arial.loadFromFile("../Resurse/ArialUnicodeMS.ttf");

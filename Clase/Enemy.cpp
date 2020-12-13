@@ -1,8 +1,10 @@
 #include "Enemy.h"
 
-Enemy::Enemy(int time, sf::Vector2i xy = {0,0}){
-    this->stime = time;
+Enemy::Enemy(sf::Vector2i xy){
     this->loc = xy;
+    health = 100;
+    mspeed = 20;
+    texture.loadFromFile("../Resurse/Imagini/Enemy_1.png");
 }
 
 sf::Vector2i Enemy::getpos() const{
@@ -16,12 +18,8 @@ bool Enemy::takedamage(int damage){
 }
 
 int Enemy::move(int time, char x){
-    //Coloanele din margine si ultima linie(mai putin iesirea) mereu vor fi pereti
+
     enum swi{ D, L, R };
-    if ( time - this->stime >= this->mspeed) {
-
-        this->stime += mspeed;
-
         switch (swi(x)) {
             case D:
                 this->loc.x++;
@@ -34,6 +32,5 @@ int Enemy::move(int time, char x){
                 break;
         }
 
-    }
     return -1;
 }

@@ -54,7 +54,7 @@ std::vector<char> Harta::getdirectii() const{
     return directii;
 }
 
-sf::IntRect Harta::getonetower(int x) const{
+sf::IntRect Harta::getonetowerspot(int x) const{
     return tower_spot[x];
 }
 
@@ -63,36 +63,63 @@ std::string Harta::getname() const{
 }
 
 int Harta::transform(int x, int type) {
-    if(type != 0) {
-        Tower* t;
-        int cost;
-        switch (x) {
+    if(type > 0) {
+        //= std::make_unique<Fast_tower>(sf::Vector2i()); //c++ 14
+        switch (type) {
             case 1:
-                t = new Fast_tower(sf::Vector2i (tower_spot[x].left,tower_spot[x].top ));
-                towers.push_back(t);
+                towers.push_back(std::make_unique<Fast_tower>(sf::Vector2i (tower_spot[x].left,tower_spot[x].top )));
                 break;
 
+            case 2:
+                towers.push_back(std::make_unique<Slow_tower>(sf::Vector2i (tower_spot[x].left,tower_spot[x].top )));
+                break;
 
+            case 3:
+                towers.push_back(std::make_unique<Scatter_tower>(sf::Vector2i (tower_spot[x].left,tower_spot[x].top )));
+                break;
+            default:
+
+                break;
         }
+
+        int out = towers.back()->getPrice();
         tower_spot.erase(tower_spot.begin() + x);
-        return -(t->getPrice());
+        return out;
     }
-    else{
+    else if(type == 0){
         std::cout << "N-ai suficienti bani \n";
         return 0;
     }
+    return 0;
 }
 
 
-int Harta::gettowercount() const {
+int Harta::gettowerspotcount(){
     return tower_spot.size();
 }
 
-Harta::~Harta() {
-    for (auto i : towers)
-        delete i;
-
+int Harta::gettowerscount() {
+    return towers.size();
 }
+
+const std::unique_ptr<Tower> &Harta::getTowers(int i) {
+    return towers[i];
+}
+
+bool Harta::nextwave() {
+    return false;
+}
+
+
+
+
+
+//Harta::~Harta() {
+//
+//
+//}
+
+
 
 
 
