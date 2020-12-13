@@ -165,7 +165,7 @@ int towertype(const Harta &map, sf::Font arial, int money){
                     for(int i = 0; i < 3; i++){
                         if(border_type[i].contains(sf::Mouse::getPosition(towertypewin))){
                             towertypewin.close();
-                            if(money >= (20+20*(i/3))){
+                            if(money >= (20+20*(i/2))){
                                 return i+1;
                             }
                             else
@@ -184,7 +184,7 @@ int towertype(const Harta &map, sf::Font arial, int money){
 
 bool startgame(const sf::Font &arial, bool debug){
 
-    int diff =1 /*= difficulty(arial)*/, player_health = 100, money = 100 / diff;
+    int diff = difficulty(arial), player_health = 100, money = 100 / diff;
     std::string map_name;
 
     if(!debug) {
@@ -238,7 +238,7 @@ bool startgame(const sf::Font &arial, bool debug){
                         if(map.getonetowerspot(i).contains(sf::Mouse::getPosition(tdgame))) {
                             int ttype = 0;
                             ttype = towertype(map, arial, money);
-                            std::cout << ttype << " " << i << "\n\n\n";
+                            //std::cout << ttype << " " << i << "\n\n\n";
                             money -= map.transform(i, ttype);
 
                         }
@@ -258,7 +258,7 @@ bool startgame(const sf::Font &arial, bool debug){
 }
 
 int main() {
-    bool test_build = 1;
+    bool test_build = 0;
     sf::Font arial;
     bool i = true;
     arial.loadFromFile("../Resurse/ArialUnicodeMS.ttf");
