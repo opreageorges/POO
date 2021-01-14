@@ -3,6 +3,7 @@
 #define FUNCTI_H_HARTA_H
 #include "SFML/Graphics.hpp"
 #include "Tower.h"
+#include "Enemy.h"
 #include <fstream>
 #include <iostream>
 #include <vector>
@@ -17,7 +18,7 @@ class Harta {
     std::vector<char> directii;
     std::vector<sf::IntRect> tower_spot;
     std::vector<std::unique_ptr<Tower>> towers;
-//    std::vector<Tower*> towers;
+    std::vector<std::unique_ptr<Enemy>> enemy_wave;
 
 public:
 
@@ -55,7 +56,7 @@ public:
     const std::unique_ptr<Tower> &getTowers(int);
 
     //Incepe urmatorul rand de inamici
-    bool nextwave();
+    bool nextwave(int);
 
 //    ~Harta();
 };

@@ -106,8 +106,9 @@ const std::unique_ptr<Tower> &Harta::getTowers(int i) {
     return towers[i];
 }
 
-bool Harta::nextwave() {
-    return false;
+bool Harta::nextwave(int wave) {
+//    enemy_wave.push_back(std::make_unique<Enemy>(start))
+//    return false;
 }
 
 
