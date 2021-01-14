@@ -6,8 +6,7 @@ set(CMAKE_CXX_STANDARD 14)
 set(SFML_STATIC_LIBRARIES TRUE)
 
 
-add_executable(POO main.cpp Clase/Harta.cpp Clase/Tower.cpp Clase/Enemy.cpp)
-#)
+add_executable(POO main.cpp Clase/Harta.cpp Clase/Tower.cpp Clase/Enemy.cpp Clase/Button_factory.cpp)
 
 set(SFML_DIR C:/Stuff/Programe/SFML-2.5.1/bin)
 

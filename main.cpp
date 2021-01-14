@@ -2,7 +2,7 @@
 #include <vector>
 #include "SFML/Graphics.hpp"
 #include "Clase/Harta.h"
-//#include "Clase/Enemy.h"
+#include "Clase/Button_factory.h"
 #include "Clase/Tower.h"
 
 //Afiseaza mesajul de la sfarsit
@@ -50,57 +50,41 @@ bool endgame(bool x, const sf::Font &arial) {
     return false;
 }
 
-int difficulty(const sf::Font &arial) {
+int difficulty() {
     sf::RenderWindow diff(sf::VideoMode(500, 500), "Alege nivelul de dificultate", sf::Style::Titlebar);
     diff.clear();
-
-    std::vector<sf::RectangleShape> fun_dificultati;
+    std::vector<sf::Sprite> fun_dificultati;
     std::vector<sf::IntRect> border_dificultati;
-    std::vector<sf::Text> tx_dificultati;
 
     fun_dificultati.reserve(3);
-    tx_dificultati.reserve(3);
     border_dificultati.reserve(3);
 
     //Creaza frumusetea de butoane
     for (int i = 0; i < 3; i++) {
-        sf::RectangleShape r(sf::Vector2f(200, 75));
-        sf::Text t;
         sf::IntRect border(sf::Vector2i(500 / 2 - 100, 50 * (i + 1) + 75 * i), sf::Vector2i(200, 75));
+        sf::Texture t;
 
-        border_dificultati.push_back(border);
-        fun_dificultati.push_back(r);
-        tx_dificultati.push_back(t);
-
-        tx_dificultati[i].setFont(arial);
-        sf::Color culoare;
         switch (i) {
             case 0:
-                tx_dificultati[i].setString("Usor");
-                culoare = sf::Color::Green;
+                t.loadFromFile("../Resurse/Imagini/Buton_usor.png");
+                border_dificultati.push_back(Button_factory::button_usor());
                 break;
             case 1:
-                tx_dificultati[i].setString("Mediu");
-                culoare = sf::Color::Yellow;
+                t.loadFromFile("../Resurse/Imagini/Buton_mediu.png");
+                border_dificultati.push_back(Button_factory::button_mediu());
                 break;
             case 2:
-                tx_dificultati[i].setString("Greu");
-                culoare = sf::Color::Red;
+                t.loadFromFile("../Resurse/Imagini/Buton_greu.png");
+                border_dificultati.push_back(Button_factory::button_greu());
                 break;
             default:
                 break;
-
         }
-
-        fun_dificultati[i].setFillColor(culoare);
+        sf::Sprite s(t);
+        fun_dificultati.push_back(s);
         fun_dificultati[i].setPosition(sf::Vector2f(500 / 2 - 100, 50 * (i + 1) + 75 * i));
 
-        tx_dificultati[i].setFillColor(sf::Color::Black);
-        tx_dificultati[i].setPosition(fun_dificultati[i].getPosition());
-        tx_dificultati[i].setCharacterSize(72);
-
         diff.draw(fun_dificultati[i]);
-        diff.draw(tx_dificultati[i]);
 
 
     }
@@ -181,7 +165,7 @@ int towertype(const Harta &map, sf::Font arial, int money) {
 
 bool startgame(const sf::Font &arial, bool debug) {
 
-    int diff = 1 /*= difficulty(arial)*/, player_health = 100, money = 100 / diff;
+    int diff = difficulty(), player_health = 100, money = 100 / diff;
     std::string map_name;
 
     if (!debug) {
@@ -253,7 +237,7 @@ bool startgame(const sf::Font &arial, bool debug) {
 }
 
 int main() {
-    bool test_build = 1;
+    bool test_build = 0;
     sf::Font arial;
     bool i = true;
     arial.loadFromFile("../Resurse/ArialUnicodeMS.ttf");
